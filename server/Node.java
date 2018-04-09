@@ -284,9 +284,8 @@ public class Node {
         	clientMap.put(splittedMessage[1], newPos);
         	
         	String clientSend = splittedMessage[1];
-        	String clientRecv;
         	
-        	if((clientRecv = getBeside(newPos)) != null){
+        	if(getBeside(newPos) != null){
         		publishToClients("coucou " + clientSend, indexFrom);
             }
         }

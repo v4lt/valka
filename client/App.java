@@ -5,7 +5,6 @@ import client.Direction;
 import client.Map;
 import client.Rafraichissement;
 import com.rabbitmq.client.Channel;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -155,7 +154,7 @@ public class App extends Stage implements ICallBackForChangesOnMap
 	    map.addPlayer(character);
         this.id = id;
         
-        scene.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
         	Direction direction = null;
         	
             if (event.getCode().equals(KeyCode.Z)) {
