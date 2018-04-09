@@ -11,15 +11,19 @@ import client.Point;
 public class Ring {
 	
     public static void main(String[] argv) throws Exception {
+    	// list of all the nodes
     	ArrayList<Node> nodes = new ArrayList<>();
 
         int index_queue_send;
         int index_queue_recv;
 
+        // specify the number of nodes
         int nb_node = 4;
 
+        // limit inside the map of each node
         ArrayList<Point> map = new ArrayList<>();
         
+        // list of limits
         map.add(new Point(0, 0));
         map.add(new Point(0, 8));
         map.add(new Point(8, 8));
@@ -28,6 +32,7 @@ public class Ring {
         int x;
         int y;
         
+        // creation of nodes with for each the limit of the specified node
         for(int i=0; i<nb_node; i++){
             index_queue_send = ((i + 1) % nb_node);
             index_queue_recv = i;
@@ -40,10 +45,11 @@ public class Ring {
 
         for(int i=0; i<nb_node; i++){
             nodes.get(i).start();
-            System.out.println(nodes.get(i));
         }
+        
+        System.out.println("Server start");
 
-        //Connection
+        //Connection with the client to say him the number of node (allow to the client to choose his node)
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         Connection connection = factory.newConnection();
@@ -52,25 +58,13 @@ public class Ring {
         String QUEUE_NAME = "ClientServer";
 
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-        /*System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
-
-        Consumer consumerNodes = new DefaultConsumer(channel) {
-            @Override
-            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                String message = new String(body, "UTF-8");
-                System.out.println(" [x] Received '" + message + "'");
-            }
-        };
-
-        channel.basicConsume(QUEUE_NAME, true, consumerNodes);*/
-
 
         Consumer consumerClient = new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
                 if(message.contains("get")){
-                    String m = "node "+nb_node;
+                    String m = "node " + nb_node;
                     channel.basicPublish("", QUEUE_NAME, null, m.getBytes());
                 }
             }

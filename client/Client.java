@@ -7,19 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.TimeoutException;
 
 public class Client extends Application
 {
@@ -128,7 +120,7 @@ public class Client extends Application
 
             RadioButton r = (RadioButton) groupNodeButton.getSelectedToggle();
             ToggleButton t = (ToggleButton)  toggleButtonGroup.getSelectedToggle();
-            App app = new App(Integer.valueOf(r.getText()), t.getText(), channel);
+            new App(Integer.valueOf(r.getText()), t.getText(), channel);
             this.stage.close();
         } catch (Exception e) {
             e.printStackTrace();

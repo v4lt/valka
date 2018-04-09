@@ -36,15 +36,18 @@ public class Node {
     //Random qui va nous permettre de décider ou va poper le prochain client
     private Random random;
 
-    //TODO: GENERER DES IDENTIFIANTS UNIQUE SUR TOUS LES NOEUDS!
+    //unique identifier for each node
     private String identifiant;
     
     private int idIncr;
 
+    // Client connected to this node
     private ConcurrentHashMap<String,Point> clientConnectedMap;
     
+    // Client connected to the game
     private ConcurrentHashMap<String,Point> clientMap;
 
+    // Skin for each client of the game
     private ConcurrentHashMap<String,String> clientSkin;
 
     public Node(int index_node, int index_queue_send, int index_queue_recv, int x, int y, int width, int height) throws IOException, TimeoutException {
@@ -91,21 +94,22 @@ public class Node {
 
         QUEUE_SERVEUR_RECV = "queue_client_recv"+index_node;
 
+        // Queue to exchange with ring (so receive from the previous, send to the next)
         channel.queueDeclare(QUEUE_NODE_SEND, false, false, false, null);
         channel.queueDeclare(QUEUE_NODE_RECV, false, false, false, null);
 
-
-        //En revanche on continue de recevoir les messages de nos clients sur une queue
+        // Queue to receive message from client
         channelClient.queueDeclare(QUEUE_SERVEUR_RECV, false, false, false, null);
 
-        //Déclaration de notre moyen de publisher / consumer.
-        //On utilisera ensuite cette commande pour publish dans les queues des consommateurs:
+        // Queue to publish/subscribe with the client 
+        // Queue to publish to all the clients
         channelClient.exchangeDeclare(EXCHANGE_NAME, "fanout");
 
     }
 
     public void start(){
 
+    	// Thread to exchange with all the node the message from a client
         Thread threadRecv = new Thread(){
             public void run(){
                 try {
@@ -117,22 +121,24 @@ public class Node {
                             messageRecv = new String(body, "UTF-8");
                             String[] splittedMessage = messageRecv.split(" ");
 
-                            //Si ce n'est pas nous qui l'avons envoyé, on le traite et on envoi aux suivants
+                            // If we haven't send the message, it process the message and send to the next 
                             
                         	if(messageRecv.contains("who")){
-                        		//Il est chez nous!
                                 int posX = Integer.valueOf(splittedMessage[2]);
                                 int posY = Integer.valueOf(splittedMessage[3]);
-                        		if(posX<=x+width && posY<=y+height){
+                                
+                                // Test if the client is into this node
+                        		if(posX <= x+width && posY <= y+height){
                         		    clientConnectedMap.put(splittedMessage[4], new Point(posX,posY));
                         			String message = "itsme "+index_node+" "+splittedMessage[1]+" "+splittedMessage[4];
-                        			channel.basicPublish("",QUEUE_NODE_SEND ,null, message.getBytes());
+                        			channel.basicPublish("", QUEUE_NODE_SEND, null, message.getBytes());
                         		}else{
-                        			channel.basicPublish("", QUEUE_NODE_SEND,null, messageRecv.getBytes());
+                        			channel.basicPublish("", QUEUE_NODE_SEND, null, messageRecv.getBytes());
                         		}
                         	}
                         	else if(messageRecv.contains("itsme"))
                         	{
+                        		// if the client need to come in this node, it specify the client
                         		if(Integer.valueOf(splittedMessage[2])==index_node){
                         			String message = "change "+splittedMessage[3]+" "+splittedMessage[1];
                         			channelClient.basicPublish(EXCHANGE_NAME, "", null, message.getBytes());
@@ -141,15 +147,16 @@ public class Node {
                         		}
                         	}
                         	else{
-                        	    //On traite le message si ce n'est pas nous qui l'avons envoyé
+                        		// It process the message if it's not this node that have send the message
                         		if(!splittedMessage[0].equals(String.valueOf(index_node))){
                                 	String mess = splittedMessage[1];
                                 	for(int i=2; i<splittedMessage.length; i++){
                             			mess += " " + splittedMessage[i];
                                 	}
                                 	
-                                	//Si 1 c'est un message de la part d'un serv
-                                	processMessage(mess,splittedMessage[0]);
+                                	
+                                	// indexFrom is equal to 1 if it's a server
+                                	processMessage(mess, splittedMessage[0]);
                         		}
                         	}
                             
@@ -163,7 +170,7 @@ public class Node {
         };
         threadRecv.start();
 
-        //Thread permettant de communiquer avec les clients du serveur
+        // Thread allowing to communicate with the clients of this nodes
         Thread threadClient = new Thread(){
             public void run(){
                 try {
@@ -172,10 +179,9 @@ public class Node {
                         public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
                                 throws IOException {
                             String messageRecvClient = new String(body, "UTF-8");
-                            //Si 0 c'est un message des clients
-                            //On met indexFrom à null lorsque l'on recoit un message de la part de nos clients
-                            //IndexFrom n'est donc pas à null si l'on recoit le message d'un autre serveur
-                            processMessage(messageRecvClient,null);
+                            
+                            // If value is null we receive from a client 
+                            processMessage(messageRecvClient, null);
                         }
                     };
                     channelClient.basicConsume(QUEUE_SERVEUR_RECV, true, consumerClient);
@@ -187,25 +193,7 @@ public class Node {
         threadClient.start();
     }
 
-	@Override
-	public String toString() {
-		return "Node [index_node=" + index_node + ", x=" + x + ", y=" + y + ", width=" + width + ", height=" + height
-				+ "]";
-	}
-
-	public Point splitPositionCharacter(String character){
-		Point p;
-
-		String position[] = character.split(" ");
-
-		int x = Integer.parseInt(position[0]);
-		int y = Integer.parseInt(position[1]);
-
-		p = new Point(x, y);
-
-		return p;
-	}
-
+    // inform the new client with the information of the clients already here
 	public void informNewAboutPlayerAlreadyHere(String identifiant) throws IOException {
         Iterator<String> i = clientMap.keySet().iterator();
         while(i.hasNext()){
@@ -216,16 +204,17 @@ public class Node {
         }
     }
 
+	// Send to the clients and the next node the message
     public void publishToClients(String message, String indexFrom){
         try {
-            channelClient.basicPublish(EXCHANGE_NAME, "", null,
-                    message.getBytes());
+            channelClient.basicPublish(EXCHANGE_NAME, "", null, message.getBytes());
             
-            //On ajoute ou non l'index du serveur qui a envoyé le message
+            // The node add this own index if the client send to him or send the message with 
+            // index of the other node
         	if(indexFrom!=null){
-        		message = indexFrom+" "+message;
+        		message = indexFrom + " " + message;
         	}else{
-        		message = index_node+" "+message;
+        		message = index_node + " " + message;
         	}
         
             channel.basicPublish("", QUEUE_NODE_SEND, null, message.getBytes());
@@ -284,9 +273,8 @@ public class Node {
         	clientMap.put(splittedMessage[1], newPos);
         	
         	String clientSend = splittedMessage[1];
-        	String clientRecv;
         	
-        	if((clientRecv = getBeside(newPos)) != null){
+        	if(getBeside(newPos) != null){
         		publishToClients("coucou " + clientSend, indexFrom);
             }
         }
@@ -328,5 +316,10 @@ public class Node {
     	return null;
     }
     
+	@Override
+	public String toString() {
+		return "Node [index_node=" + index_node + ", x=" + x + ", y=" + y + ", width=" + width + ", height=" + height
+				+ "]";
+	}
 
 }

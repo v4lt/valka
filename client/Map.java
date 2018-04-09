@@ -20,8 +20,6 @@ public class Map {
 	private ArrayList<Character> characters;
 	
 	Map(String url){
-		JSONParser parser = new JSONParser();
-
         try {
         	
             //Object obj = parser.parse(new FileReader(url));
