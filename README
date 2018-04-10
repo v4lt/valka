@@ -1,0 +1,38 @@
+Projet réalisé par Maxime Calka et Victor Baverel.
+
+
+Tout se trouve dans le dossier Source!
+Les jars à intégrer dans jar.
+Les ressources dans frames et map.
+Le code dans client et serveur
+
+
+
+Pour utiliser notre application réaliser les choses suivantes.
+
+Etape 1 : lancer le serveur
+
+chmod +x serveur.jar
+java -jar serveur.jar
+
+Etape 2 : lancer les clients (répétés cette opération pour autant de client que vous souhaitez).
+
+chmox +x client.jar
+java -jar client.jar
+
+
+Une fois dans l'interface -> Saisissez l'ip sur lequel le serveur a été lancé.
+
+Si depuis votre même machine -> localhost (et non 127.0.0.1)
+Si depuis une autre machine -> ip de la machine en question ( vérifiez que les ports ne sont pas bloqués )
+
+Choisissez sur quel node vous souhaitez que votre personne apparaisse.
+Choisissez votre skin (apparence).
+
+Appuyez sur play (tout en bas à gauche)
+
+Comment Jouer?
+
+Bougez avec ZQSD.
+Déplacez-vous à proximiter d'un autre joueur pour lui dire Bonjour!
+Pour quitter, fermer la fenêtre.

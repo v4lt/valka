@@ -11,6 +11,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 import java.io.IOException;
 
 public class Client extends Application
@@ -25,6 +27,14 @@ public class Client extends Application
     private Connection connection;
     @Override
     public void start(Stage stage) throws Exception {
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
+
         this.stage = stage;
         mainBorder = new BorderPane();
         this.QUEUE_CLIENT_SEND = "ClientServer";

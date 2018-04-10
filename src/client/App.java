@@ -145,8 +145,8 @@ public class App extends Stage implements ICallBackForChangesOnMap
     // @p  correspond à la position sur laquelle on est apparue
     @Override
     public void connected(String id, Point p) {
-	    //this.character = new Character(this.characterUrl, p.getX(), p.getY(), Direction.DOWN);
-	    //map.addPlayer(character);
+	    this.character = new Character(this.characterUrl, p.getX(), p.getY(), Direction.DOWN);
+	    map.addPlayer(character);
         this.id = id;
         
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
