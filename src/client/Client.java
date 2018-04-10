@@ -72,6 +72,7 @@ public class Client extends Application
             {
                 VBox vBox = new VBox();
                 HBox  hboxNodes = new HBox();
+                hboxNodes.getChildren().add(new Label("CHOOSE NODE: "));
                 String message = new String(body, "UTF-8");
                 String[] splittedMessage = message.split(" ");
                 if(message.contains("node")){
@@ -105,7 +106,7 @@ public class Client extends Application
                     tg4.setToggleGroup(toggleButtonGroup);
                     ToggleButton tg5 = new ToggleButton("jiraya");
                     tg5.setToggleGroup(toggleButtonGroup);
-                    HBox toggleButtonHbox = new HBox(tg1,tg2,tg3,tg4,tg5);
+                    HBox toggleButtonHbox = new HBox(new Label("CHOOSE SKIN: "),tg1,tg2,tg3,tg4,tg5);
                     vBox.getChildren().add(toggleButtonHbox);
                     buildUi(buttonPlay, vBox);
                     channel.basicCancel(idChannel);

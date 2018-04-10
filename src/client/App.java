@@ -90,7 +90,6 @@ public class App extends Stage implements ICallBackForChangesOnMap
 
 
 	//L'objet communication nous prévient via cette méthode lorsque quelqu'un a bougé
-	// TODO: Retrouver dans notre hashmap grâce au ID quel est le caracter qui a bougé puis changer sa position avec p
 	@Override
 	public void someoneMove(String id, Point newPosition) {
         if(!id.equals(this.id)){
@@ -100,9 +99,6 @@ public class App extends Stage implements ICallBackForChangesOnMap
 	}
 
 	//L'objet communication nous prévient via cette méthode lorsque quelqu'un a rejoint la partie
-	//  TODO:Créer un nouveau caractère,
-	//  TODO:Ajouter à la carte
-	// 	TODO:ajouter à la hashmap
 	@Override
 	public void someoneJoin(String id, Point p, String url) {
 	    if(!id.equals(this.id)){
@@ -113,7 +109,6 @@ public class App extends Stage implements ICallBackForChangesOnMap
 	}
 
 	//L'objet communication nous prévient via cette méthode lorsque quelqu'un a quitté la partie
-	//TODO: Retirer le joueur de la hashmap, retirer le joueur de la carte
 	@Override
 	public void someoneLeave(String id) {
         System.out.println("LEAVE");
@@ -150,8 +145,8 @@ public class App extends Stage implements ICallBackForChangesOnMap
     // @p  correspond à la position sur laquelle on est apparue
     @Override
     public void connected(String id, Point p) {
-	    this.character = new Character(this.characterUrl, p.getX(), p.getY(), Direction.DOWN);
-	    map.addPlayer(character);
+	    //this.character = new Character(this.characterUrl, p.getX(), p.getY(), Direction.DOWN);
+	    //map.addPlayer(character);
         this.id = id;
         
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
