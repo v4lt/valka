@@ -130,7 +130,6 @@ public class App extends Stage implements ICallBackForChangesOnMap
     }
 
 	public void sayHello(String client, boolean say){
-		System.out.println(client);
 		if(listCharacters.containsKey(client)){
 			listCharacters.get(client).setHello(say);
 		}else if(client.equals(id)){

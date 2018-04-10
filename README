@@ -4,9 +4,18 @@ Projet réalisé par Maxime Calka et Victor Baverel.
 Tout se trouve dans le dossier Source!
 Les jars à intégrer dans jar.
 Les ressources dans frames et map.
-Le code dans client et serveur
+Le code dans client et serveur.
 
+Classes remarquables:
 
+Dans server:
+    *Ring est le proxy qui se charge de créer le Ring de node et procure l'interface de connexion aux clients
+    *Node sont les serveurs du node
+
+Dans client:
+    *Client fourni l'interface de connexion
+    *App fourni l'inteface de jeu
+    *Communication fait tampon entre App et les messages recu par un Node
 
 Pour utiliser notre application réaliser les choses suivantes.
 
