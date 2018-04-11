@@ -261,7 +261,6 @@ public class Node {
             if(clientConnectedMap.containsKey(splittedMessage[1])){
                 clientConnectedMap.put(splittedMessage[1], new Point(xC, yC));
 
-                //TODO:Mauvaise condition
                 if(xC > this.x + width || yC > this.y + height || yC < this.y || xC < this.x){
                     getIdNewMap(xC, yC, splittedMessage[1]);
                     clientConnectedMap.remove(splittedMessage[1]);
