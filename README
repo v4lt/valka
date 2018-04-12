@@ -39,7 +39,7 @@ Une fois dans l'interface -> Saisissez l'ip sur lequel le serveur a été lancé
 Si il a été lancé sur votre même machine -> localhost (et non 127.0.0.1)
 Si depuis une autre machine -> ip de la machine en question ( vérifiez que les ports ne sont pas bloqués )
 
-Choisissez sur quel node vous souhaitez que votre personne apparaisse.
+Choisissez sur quel node vous souhaitez que votre personnage apparaisse.
 Choisissez votre skin (apparence).
 
 Appuyez sur play (tout en bas à gauche)
