@@ -1,30 +1,34 @@
-Projet réalisé par Maxime Calka et Victor Baverel.
+Projet Java réalisé avec Rabbitmq et la librairie graphique javaFX.
+Sources des textures utilisées:http://www.rpg-maker.fr/
 
 
-Tout se trouve dans le dossier Source!
-Les jars à intégrer dans jar.
-Les ressources dans frames et map.
-Le code dans client et serveur.
+Le code source et le reste des ressources se trouvent dans src.
+Les librairies externes dans src/jar/.
+Les ressources dans frames et src/map/.
+Le code dans client et src/serveur/.
 
 Classes remarquables:
 
 Dans server:
-    *Ring est le proxy qui se charge de créer le Ring de node et procure l'interface de connexion aux clients
-    *Node sont les serveurs du node
+    *Ring est le proxy qui se charge de créer le Ring de node et 
+	procure l'interface de connexion aux clients (contient main)
+    *Node sont les serveurs de la typologie en anneau
 
 Dans client:
-    *Client fourni l'interface de connexion
+    *Client fourni l'interface de connexion (contient main)
     *App fourni l'inteface de jeu
     *Communication fait tampon entre App et les messages recu par un Node
 
-Pour utiliser notre application réaliser les choses suivantes.
 
-Etape 1 : lancer le serveur
 
+Pour utiliser notre application, réalisez les choses suivantes.
+Allez dans le dossier /jar à la racine (et non dans src/jar).
+
+Etape 1 : lancez le serveur
 chmod +x serveur.jar
 java -jar serveur.jar
 
-Etape 2 : lancer les clients (répétés cette opération pour autant de client que vous souhaitez).
+Etape 2 : lancez les clients (répétez cette opération pour autant de client que vous souhaitez).
 
 chmox +x client.jar
 java -jar client.jar
@@ -32,7 +36,7 @@ java -jar client.jar
 
 Une fois dans l'interface -> Saisissez l'ip sur lequel le serveur a été lancé.
 
-Si depuis votre même machine -> localhost (et non 127.0.0.1)
+Si il a été lancé sur votre même machine -> localhost (et non 127.0.0.1)
 Si depuis une autre machine -> ip de la machine en question ( vérifiez que les ports ne sont pas bloqués )
 
 Choisissez sur quel node vous souhaitez que votre personne apparaisse.
@@ -43,5 +47,5 @@ Appuyez sur play (tout en bas à gauche)
 Comment Jouer?
 
 Bougez avec ZQSD.
-Déplacez-vous à proximiter d'un autre joueur pour lui dire Bonjour!
-Pour quitter, fermer la fenêtre.
+Déplacez-vous à proximité d'un autre joueur pour lui dire Bonjour!
+Pour quitter, fermez la fenêtre.
